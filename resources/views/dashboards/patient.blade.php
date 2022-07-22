@@ -120,7 +120,9 @@
 								<th>TTL</th>
 								<th>TB/BB</th>
 								<th>Alamat</th>
-								<th>Action</th>
+								<th>Action
+									
+								</th>
 							</tr>
 						</thead>
 						<tbody>
