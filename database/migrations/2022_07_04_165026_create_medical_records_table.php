@@ -17,9 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('id_user')->nullable();
             $table->string('complaint')->nullable();
-            $table->string('status')->nullable();
             $table->string('id_medicine')->nullable();
+            $table->string('dose')->nullable();
             $table->string('price')->nullable();
+            $table->string('concoction_medicine')->nullable();
+            $table->string('price_concoction_medicine')->nullable();
+            $table->string('total_price')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

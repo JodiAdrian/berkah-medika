@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function render()
     {
+        // nama, jenis kelamin, tgl lahir, no.handphone, nama suami, alamat
         $patient = Patients::all();
         return view ('dashboards.patient', ['patient' => $patient]);
     }
@@ -18,36 +19,27 @@ class DashboardController extends Controller
         $rules = 
 
         $this->validate($request, [
-            'identity_number' => 'required|min:16',
-            'name' => 'required',
-            'born' => 'required',
-            'birthdate' => 'required',
-            'height' => 'required',
-            'weight' => 'required',
-            'contact' => 'required',
-            'address' => 'required',
-        ],
-        [
-            'identity_number.required' => 'NIK dibutuhkan',
-            'identity_number.min' => 'NIK minimal 16 angka',
-            'name.required' => 'Nama lengkap dibutuhkan',
-            'born.required' => 'Tempat lahir dibutuhkan',
-            'birthdate.required' => 'Tanggal lahir dibutuhkan',
-            'height.required' => 'Tinggi badan dibutuhkan',
-            'weight.required' => 'Berat badan dibutuhkan',
-            'contact.required' => 'Kontak dibutuhkan',
-            'address.required' => 'Alamat dibutuhkan',
-        ]
-    );
+                'name' => 'required',
+                'gender' => 'required',
+                'birthdate' => 'required',
+                'phone' => 'required',
+                'address' => 'required',
+            ],
+            [
+                'name.required' => 'Nama lengkap dibutuhkan',
+                'gender.required' => 'Jenis Kelamin dibutuhkan',
+                'birthdate.required' => 'Tanggal lahir dibutuhkan',
+                'phone.required' => 'Nomor HP dibutuhkan',
+                'address.required' => 'Alamat dibutuhkan',
+            ]
+        );
 
         $patient = new Patients();
-        $patient->identity_number = $request->identity_number;
         $patient->name = $request->name;
-        $patient->born = $request->born;
+        $patient->gender = $request->gender;
         $patient->birthdate = $request->birthdate;
-        $patient->height = $request->height;
-        $patient->weight = $request->weight;
-        $patient->contact = $request->contact;
+        $patient->phone = $request->phone;
+        $patient->nama_suami = $request->nama_suami;
         $patient->address = $request->address;
         $patient->save();
 
@@ -63,25 +55,21 @@ class DashboardController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
-            'identity_number' => 'required|min:16',
-            'id' => ['required', 'numeric'],
+            'id' => 'required',
             'name' => 'required',
-            'born' => 'required',
+            'gender' => 'required',
             'birthdate' => 'required',
-            'height' => 'required',
-            'weight' => 'required',
-            'contact' => 'required',
+            'phone' => 'required',
+            'nama_suami' => 'nullable',
             'address' => 'required',
         ]);
         $patient = Patients::findOrFail($data['id']);
         $patient->update([
-            'identity_number' => $data['identity_number'],
             'name' => $data['name'],
-            'born' => $data['born'],
+            'gender' => $data['gender'],
             'birthdate' => $data['birthdate'],
-            'height' => $data['height'],
-            'weight' => $data['weight'],
-            'contact' => $data['contact'],
+            'phone' => $data['phone'],
+            'nama_suami' => $data['nama_suami'],
             'address' => $data['address'],
         ]);
         return back()->with('success', 'Pasien telah diupdate !');

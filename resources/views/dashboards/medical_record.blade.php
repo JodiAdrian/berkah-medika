@@ -160,7 +160,7 @@
 						<div class="form-group">
                             <label for="exampleSelect1">Pilih Pasien
                             <span class="text-danger">*</span></label>
-                            <select class="form-control" id="exampleSelect1">
+                            <select name="patient" class="form-control" id="exampleSelect1">
 								@foreach ($patients as $patient)
                                 <option value="$patient->id_user">{{$patient->name}}</option>
 							@endforeach
@@ -168,8 +168,8 @@
                         </div>
 						<div class="form-group">
 							<label>Keluhan <span class="text-danger">*</span></label>
-							<input name="dose" type="text" class="form-control @error('dose') is-invalid @enderror"  placeholder="Masukkan Keluhan" value="{{ old('dose') }}"/>
-							@error('dose')<div class="alert text-danger">{{ $message }}</div>@enderror
+							<input name="complaint" type="text" class="form-control @error('complaint') is-invalid @enderror"  placeholder="Masukkan Keluhan" value="{{ old('complaint') }}"/>
+							@error('complaint')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div id="formRepeater">
 							<div id="formOrder-0">
@@ -179,10 +179,10 @@
 									<div class="col-8 pr-1">
 								  <div class="form-group">
 									<select name="medicines[0][medicines]" class="form-control" id="exampleSelect1">
-									  {{-- <option value="">Pilih Item</option>
-									  @foreach ($items as $item)
-									  <option value="{{ $item->id_item }}">{{ $item->item_name }}</option>
-									  @endforeach --}}
+									  <option value="">Pilih Item</option>
+									  @foreach ($medicines as $med)
+									  <option value="{{ $med->id }}">{{ $med->name }}</option>
+									  @endforeach
 									</select>
 								  </div>
 								</div>

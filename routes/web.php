@@ -10,6 +10,11 @@ Route::get  ('/pasien/{id}/delete', [App\Http\Controllers\DashboardController::c
 
 Route::get('/rekam-medis', [App\Http\Controllers\MedicalRecordController::class, 'render'])->name('medical-record');
 
+Route::get('/alat_kesehatan',[App\Http\Controllers\MedicalDeviceController::class, 'render'])->name('device');
+Route::post('/alat_kesehatan/input',[App\Http\Controllers\MedicalDeviceController::class, 'store'])->name('store.device');
+Route::post('/alat_kesehatan/update',[App\Http\Controllers\MedicalDeviceController::class, 'update'])->name('update.device');
+Route::get('/alat_kesehatan/{id}/delete', [App\Http\Controllers\MedicalDeviceController::class, 'delete'])->name('delete.device');
+
 Route::get('/obat', [App\Http\Controllers\MedicineController::class, 'render'])->name('medicine');
 Route::post('/obat/input',[App\Http\Controllers\MedicineController::class,'store'])->name('store.medicine');
 Route::get('/obat/{id}/delete',[App\Http\Controllers\MedicineController::class,'delete'])->name('delete.medicine');

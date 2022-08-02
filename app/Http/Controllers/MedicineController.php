@@ -18,19 +18,22 @@ class MedicineController extends Controller
 
         $this->validate($request, [
             'name' => 'required',
-            'dose' => 'required',
+            'type' => 'required',
+            'unit' => 'required',
             'price' => 'required',
         ],
         [
             'name.required' => 'Nama obat dibutuhkan',
-            'dose.required' => 'Dosis dibutuhkan',
+            'type.required' => 'Jenis Obat dibutuhkan',
+            'unit.required' => 'Satuan Obat dibutuhkan',
             'price.required' => 'Harga dibutuhkan',
         ]
     );
 
         $medicine = new Medicines();
         $medicine->name = $request->name;
-        $medicine->dose = $request->dose;
+        $medicine->type = $request->type;
+        $medicine->unit = $request->unit;
         $medicine->price = $request->price;
         $medicine->save();
 

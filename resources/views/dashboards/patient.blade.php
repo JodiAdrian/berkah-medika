@@ -114,11 +114,11 @@
 					<table class="datatable datatable-bordered datatable-head-custom" id="kt_datatable">
 						<thead>
 							<tr>
-								<th>NIK</th>
-								<th>Kontak</th>
 								<th>Nama Lengkap</th>
-								<th>TTL</th>
-								<th>TB/BB</th>
+								<th>Jenis Kelamin</th>
+								<th>Tanggal Lahir</th>
+								<th>Nomor HP</th>
+								<th>Nama Suami</th>
 								<th>Alamat</th>
 								<th>Action
 									
@@ -128,22 +128,20 @@
 						<tbody>
 							@foreach ($patient as $p)
 							<tr>
-								<td>{{ $p->identity_number }}</td>
-								<td>{{ $p->contact }}</td>
 								<td>{{ $p->name }}</td>
-								<td>{{ $p->born }}, {{ $p->birthdate }}</td>
-								<td>{{ $p->height }} cm/{{ $p->weight }} kg</td>
+								<td>{{ $p->gender }}</td>
+								<td>{{ $p->birthdate }}</td>
+								<td>{{ $p->phone }}</td>
+								<td>{{ $p->nama_suami }}</td>
 								<td>{{ $p->address }}</td>
 								<td>
 									<button class="btn btn-outline-warning btn-sm btn-icon" onclick="modalEdit(
 										'{{ $p->id }}',
-										'{{ $p->identity_number }}',
 										'{{ $p->name }}',
-										'{{ $p->born }}',
+										'{{ $p->gender }}',
 										'{{ $p->birthdate }}',
-										'{{ $p->height }}',
-										'{{ $p->weight }}',
-										'{{ $p->contact }}',
+										'{{ $p->phone }}',
+										'{{ $p->nama_suami }}',
 										'{{ $p->address }}',
 									);"><i class="icon-sm text-warning flaticon-edit"></i></button>
 									<a href="{{route ('delete.patient',['id'=>$p->id])}}" class="btn btn-outline-danger btn-sm btn-icon">
@@ -176,41 +174,31 @@
 					{{ csrf_field() }}
 					<div class="modal-body">
 						<div class="form-group">
-							<label>NIK <span class="text-danger">*</span></label>
-							<input name="identity_number" type="text" class="form-control @error('identity_number') is-invalid @enderror"  placeholder="Masukkan NIK" value="{{ old('identity_number') }}"/>
-							@error('identity_number')<div class="alert text-danger">{{ $message }}</div>@enderror
-						</div>
-						<div class="form-group">
 							<label>Nama Lengkap <span class="text-danger">*</span></label>
 							<input name="name" type="text" class="form-control @error('name') is-invalid @enderror"  placeholder="Masukkan Nama Lengkap" value="{{ old('name') }}"/>
 							@error('name')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div class="form-group">
-							<label>Tempat Lahir <span class="text-danger">*</span></label>
-							<input name="born" type="text" class="form-control @error('born') is-invalid @enderror"  value="{{ old('born') }}"placeholder="Masukkan Tempat Lahir"/>
-							@error('born')<div class="alert text-danger">{{ $message }}</div>@enderror
+							<label for="gender">Jenis Kelamin</label>
+							<select class="form-control form-control-lg" name="gender" id="gender">
+								<option value="L">Laki-laki</option>
+								<option value="P">Perempuan</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="example-date-input">Tanggal Lahir</label>
 							<input name="birthdate" class="form-control @error('birthdate') is-invalid @enderror" type="date" value="{{ old('birthdate') }}" id="example-date-input"/>
 							@error('birthdate')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
-						<div class="form-group row">
-							<label for="example-email-input" class="col-3 col-form-label">Tinggi Badan</label>
-							<div class="col-3">
-							<input name="height" class="form-control @error('height') is-invalid @enderror" value="{{ old('height') }}" type="text" placeholder="CM" id="example-email-input"/>
-						</div>
-							@error('height')<div class="alert text-danger">{{ $message }}</div>@enderror
-							<label for="example-email-input" class="col-3 col-form-label">Berat Badan</label>
-							<div class="col-3">
-							<input name="weight" class="form-control @error('weight') is-invalid @enderror" value="{{ old('weight') }}" type="text" placeholder="KG" id="example-email-input"/>
-							</div>
-							@error('weight')<div class="alert text-danger">{{ $message }}</div>@enderror
+						<div class="form-group">
+							<label>Nomor HP<span class="text-danger">*</span></label>
+							<input name="phone" type="number" class="form-control @error('phone') is-invalid @enderror"  value="{{ old('phone') }}"placeholder="Masukkan Tempat Lahir"/>
+							@error('phone')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div class="form-group">
-							<label>Kontak <span class="text-danger">*</span></label>
-							<input name="contact" type="number" class="form-control @error('contact') is-invalid @enderror"  value="{{ old('contact') }}" placeholder="Masukkan Kontak"/>
-							@error('contact')<div class="alert text-danger">{{ $message }}</div>@enderror
+							<label>Nama Suami</label>
+							<input name="nama_suami" type="text" class="form-control @error('nama_suami') is-invalid @enderror"  placeholder="Masukkan Nama Suami" value="{{ old('nama_suami') }}"/>
+							@error('nama_suami')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div class="form-group mb-1">
 							<label for="exampleTextarea">Alamat</label>
@@ -242,41 +230,31 @@
 					<div class="modal-body">
 						<input id="edit-id" name="id" type="hidden" class="form-control @error('id') is-invalid @enderror" value="{{ old('id') }}"/>
 						<div class="form-group">
-							<label>NIK <span class="text-danger">*</span></label>
-							<input id="edit-identity_number" name="identity_number" type="text" class="form-control @error('identity_number') is-invalid @enderror"  placeholder="Masukkan NIK" value="{{ old('identity_number') }}"/>
-							@error('identity_number')<div class="alert text-danger">{{ $message }}</div>@enderror
-						</div>
-						<div class="form-group">
 							<label>Nama Lengkap <span class="text-danger">*</span></label>
 							<input id="edit-name" name="name" type="text" class="form-control @error('name') is-invalid @enderror"  placeholder="Masukkan Nama Lengkap" value="{{ old('name') }}"/>
 							@error('name')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div class="form-group">
-							<label>Tempat Lahir <span class="text-danger">*</span></label>
-							<input id="edit-born" name="born" type="text" class="form-control @error('born') is-invalid @enderror"  value="{{ old('born') }}"placeholder="Masukkan Tempat Lahir"/>
-							@error('born')<div class="alert text-danger">{{ $message }}</div>@enderror
+							<label for="gender">Jenis Kelamin</label>
+							<select class="form-control form-control-lg" name="gender" id="gender">
+								<option value="L">Laki-laki</option>
+								<option value="P">Perempuan</option>
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="example-date-input">Tanggal Lahir</label>
 							<input id="edit-birthdate" name="birthdate" class="form-control @error('birthdate') is-invalid @enderror" type="date" value="{{ old('birthdate') }}" id="example-date-input"/>
 							@error('birthdate')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
-						<div class="form-group row">
-							<label for="example-email-input" class="col-3 col-form-label">Tinggi Badan</label>
-							<div class="col-3">
-							<input id="edit-height" name="height" class="form-control @error('height') is-invalid @enderror" value="{{ old('height') }}" type="text" placeholder="CM" id="example-email-input"/>
-						</div>
-							@error('height')<div class="alert text-danger">{{ $message }}</div>@enderror
-							<label for="example-email-input" class="col-3 col-form-label">Berat Badan</label>
-							<div class="col-3">
-							<input id="edit-weight" name="weight" class="form-control @error('weight') is-invalid @enderror" value="{{ old('weight') }}" type="text" placeholder="KG" id="example-email-input"/>
-							</div>
-							@error('weight')<div class="alert text-danger">{{ $message }}</div>@enderror
+						<div class="form-group">
+							<label>Nomor HP<span class="text-danger">*</span></label>
+							<input id="edit-phone" name="phone" type="number" class="form-control @error('phone') is-invalid @enderror"  value="{{ old('phone') }}"placeholder="Masukkan Tempat Lahir"/>
+							@error('phone')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div class="form-group">
-							<label>Kontak <span class="text-danger">*</span></label>
-							<input id="edit-contact" name="contact" type="number" class="form-control @error('contact') is-invalid @enderror"  value="{{ old('contact') }}" placeholder="Masukkan Kontak"/>
-							@error('contact')<div class="alert text-danger">{{ $message }}</div>@enderror
+							<label>Nama Suami</label>
+							<input id="edit-nama_suami" name="nama_suami" type="text" class="form-control @error('nama_suami') is-invalid @enderror"  placeholder="Masukkan Nama Suami" value="{{ old('nama_suami') }}"/>
+							@error('nama_suami')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div class="form-group mb-1">
 							<label for="exampleTextarea">Alamat</label>
@@ -299,32 +277,26 @@
 <script>
 	function modalEdit(
 		id,
-		identity_number,
 		name,
-		born,
+		gender,
 		birthdate,
-		height,
-		weight,
-		contact,
+		phone,
+		nama_suami,
 		address
 	) {
 		var id = id;
-		var identity_number = identity_number;
 		var name = name;
-		var born = born;
+		var gender = gender;
 		var birthdate = birthdate;
-		var height = height;
-		var weight = weight;
-		var contact = contact;
+		var phone = phone;
+		var nama_suami = nama_suami;
 		var address = address;		
 		$('#modalEdit').modal('show');
-		$('#edit-identity_number').val(identity_number)
 		$('#edit-name').val(name)
-		$('#edit-born').val(born)
+		$('#edit-gender').val(gender)
 		$('#edit-birthdate').val(birthdate)
-		$('#edit-height').val(height)
-		$('#edit-weight').val(weight)
-		$('#edit-contact').val(contact)
+		$('#edit-phone').val(phone)
+		$('#edit-nama_suami').val(nama_suami)
 		$('#edit-address').val(address)
 		$('#edit-id').val(id)
 	}

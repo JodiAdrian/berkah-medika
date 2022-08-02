@@ -12,8 +12,8 @@
 			<div class="card card-custom">
 				<div class="card-header flex-wrap border-0 pt-6 pb-0">
 					<div class="card-title">
-						<h3 class="card-label">Obat
-						<span class="d-block text-muted pt-2 font-size-sm">Data obat</span></h3>
+						<h3 class="card-label">Alat Kesehatan
+						<span class="d-block text-muted pt-2 font-size-sm">Data Alat Kesehatan</span></h3>
 					</div>
 					<div class="card-toolbar">
 						<!--begin::Dropdown-->
@@ -84,7 +84,7 @@
 						<!--begin::Button-->
 						<!-- Button trigger modal-->
 						<button type="button" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#exampleModal">
-							Tambah Obat
+							Tambah Alat
 						</button>
 					</div>
 				</div>
@@ -113,30 +113,26 @@
 					<table class="datatable datatable-bordered datatable-head-custom" id="kt_datatable">
 						<thead>
 							<tr>
-								<th>Nama</th>
-								<th>Jenis</th>
-								<th>Satuan</th>
+								<th>Nama Alat</th>
+								<th>Jumlah</th>
 								<th>Harga</th>
-								<th>Tanggal</th>
 								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($medicine as $m)
+							@foreach ($device as $d)
 							<tr>
-								<td>{{ $m->name }}</td>
-								<td>{{ $m->type }}</td>
-								<td>{{ $m->unit }}</td>
-								<td> Rp.{{ number_format ($m->price) }}</td>
-								<td>{{ $m->created_at }}</td>
+								<td>{{ $d->device_name }}</td>
+								<td>{{ $d->unit}}</td>
+								<td> Rp.{{ number_format ($d->price) }}</td>
 								<td>
 									<button class="btn btn-outline-warning btn-sm btn-icon" onclick="modalEdit(
-										'{{ $m->id }}',
-										'{{ $m->name }}',
-										'{{ $m->dose }}',
-										'{{ $m->price }}',
+										'{{ $d->id }}',
+										'{{ $d->device_name }}',
+										'{{ $d->unit }}',
+										'{{ $d->price }}',
 									);"><i class="icon-sm text-warning flaticon-edit"></i></button>
-									<a href="{{route ('delete.medicine',['id'=>$m->id])}}" class="btn btn-outline-danger btn-sm btn-icon">
+									<a href="{{route ('delete.device',['id'=>$d->id])}}" class="btn btn-outline-danger btn-sm btn-icon">
 										<i class="icon-sm text-warning flaticon-delete"></i>
 									</a>
 								</td>
@@ -157,39 +153,23 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Tambah Obat</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Tambah Alat Kesehatan</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<i aria-hidden="true" class="ki ki-close"></i>
 					</button>
 				</div>
-				<form action="{{ route('store.medicine') }}" method="post" enctype="multipart/form-data">
+				<form action="{{ route('store.device') }}" method="post" enctype="multipart/form-data">
 					{{ csrf_field() }}
 					<div class="modal-body">
 						<div class="form-group">
-							<label>Obat <span class="text-danger">*</span></label>
-							<input name="name" type="text" class="form-control @error('name') is-invalid @enderror"  placeholder="Masukkan nama obat" value="{{ old('name') }}"/>
+							<label>Nama Alat <span class="text-danger">*</span></label>
+							<input name="device_name" type="text" class="form-control @error('name') is-invalid @enderror"  placeholder="Masukkan nama obat" value="{{ old('name') }}"/>
 							@error('name')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div class="form-group">
-                            <label for="exampleSelect1">Pilih Jenis Obat
-                            <span class="text-danger">*</span></label>
-                            <select name="type" class="form-control" id="exampleSelect1">
-                                <option value="Tablet">Tablet</option>
-                                <option value="Sirup">Sirup</option>
-                                <option value="Injeksi">Injeksi</option>
-                                <option value="Cairan Infus">Cairan Infus</option>
-                            </select>
-						</div>
-						<div class="form-group">
-                            <label for="exampleSelect1">Pilih Satuan Obat Obat
-                            <span class="text-danger">*</span></label>
-                            <select name="unit" class="form-control" id="exampleSelect1">
-                                <option value="Butir">Butir</option>
-                                <option value="Sirup">Sirup</option>
-                                <option value="Injeksi">Injeksi</option>
-                                <option value="Botol 100 ml">Botol 100 ml</option>
-                                <option value="Botol 500 ml">Botol 500 ml</option>
-                            </select>
+							<label>Jumlah <span class="text-danger">*</span></label>
+							<input name="unit" type="text" class="form-control @error('dose') is-invalid @enderror"  placeholder="Masukkan Dosis" value="{{ old('dose') }}"/>
+							@error('dose')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div class="form-group">
 							<label>Harga <span class="text-danger">*</span></label>
@@ -216,36 +196,20 @@
 						<i aria-hidden="true" class="ki ki-close"></i>
 					</button>
 				</div>
-				<form action="{{ route('update.patient') }}" method="POST" enctype="multipart/form-data">
+				<form action="{{ route('update.device') }}" method="POST" enctype="multipart/form-data">
 					{{ csrf_field() }}
 					<div class="modal-body">
 						<input id="edit-id" name="id" type="hidden" class="form-control @error('id') is-invalid @enderror" value="{{ old('id') }}"/>
 						<div class="form-group">
-							<label>Nama Obat <span class="text-danger">*</span></label>
-							<input id="edit-name" name="name" type="text" class="form-control @error('name') is-invalid @enderror"  placeholder="Masukkan Nama Lengkap" value="{{ old('name') }}"/>
-							@error('name')<div class="alert text-danger">{{ $message }}</div>@enderror
+							<label>Nama Alat <span class="text-danger">*</span></label>
+							<input id="edit-device_name" name="device_name" type="text" class="form-control @error('deivce_name') is-invalid @enderror"  placeholder="Masukkan Nama Alat" value="{{ old('deivce_name') }}"/>
+							@error('deivce_name')<div class="alert text-danger">{{ $message }}</div>@enderror
 						</div>
 						<div class="form-group">
-                            <label for="exampleSelect1">Pilih Jenis Obat
-                            <span class="text-danger">*</span></label>
-                            <select class="form-control" id="exampleSelect1">
-                                <option value="Tablet">Tablet</option>
-                                <option value="Sirup">Sirup</option>
-                                <option value="Injeksi">Injeksi</option>
-                                <option value="Cairan Infus">Cairan Infus</option>
-                            </select>
-                        </div>
-						<div class="form-group">
-                            <label for="exampleSelect1">Pilih Satuan Obat
-                            <span class="text-danger">*</span></label>
-                            <select class="form-control" id="exampleSelect1">
-                                <option value="Butir">Butir</option>
-                                <option value="Botol">Botol</option>
-                                <option value="Fial">Fial</option>
-                                <option value="Cairan Infus 100 ml">Cairan Infus 100 ml</option>
-                                <option value="Cairan Infus 500 ml">Cairan Infus 500 ml</option>
-                            </select>
-                        </div>
+							<label>Jumlah <span class="text-danger">*</span></label>
+							<input id="edit-unit" name="unit" type="text" class="form-control @error('unit') is-invalid @enderror"  value="{{ old('unit') }}"placeholder="Jumlah Alat"/>
+							@error('unit')<div class="alert text-danger">{{ $message }}</div>@enderror
+						</div>
 						<div class="form-group">
 							<label>Harga <span class="text-danger">*</span></label>
 							<input id="edit-price" name="price" type="text" class="form-control @error('price') is-invalid @enderror"  value="{{ old('price') }}"placeholder="Masukkan Tempat Lahir"/>
@@ -268,17 +232,17 @@
 <script>
 	function modalEdit(
 		id,
-		name,
-		dose,
+		device_name,
+		unit,
 		price
 	) {
 		var id = id;
-		var name = name;
-		var dose = dose;
+		var device_name = device_name;
+		var unit = unit;
 		var price = price;	
 		$('#modalEdit').modal('show');
-		$('#edit-name').val(name)
-		$('#edit-dose').val(dose)
+		$('#edit-device_name').val(device_name)
+		$('#edit-unit').val(unit)
 		$('#edit-price').val(price)
 		$('#edit-id').val(id)
 	}
