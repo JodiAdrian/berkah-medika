@@ -5,43 +5,52 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Patients;
 use App\Models\Medicines;
+use App\Models\MedicalRecords;
+use App\Models\MedicalRecordsMedicines;
+use Illuminate\Support\Facades\DB;
 
 class MedicalRecordController extends Controller
 {
     public function render()
     {
+        $medical_records = MedicalRecords::latest()->get();
         $patients = Patients::orderBy('name','asc')->get();
         $medicines = Medicines::orderBy('name','asc')->get();
-        return view('dashboards.medical_record',['patients'=>$patients,'medicines'=>$medicines]);
+        return view('dashboards.medical_record',['patients'=>$patients,'medicines'=>$medicines, 'medical_records' => $medical_records]);
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'supplier' => ['required','max:255'],
-            'items'=> ['required','array'],
-            'items.*.item'=> ['required','numeric', 'exists:items,id_item'],
-            'items.*.qty'=> ['required','integer', 'min:1'],
-            'description'=> ['nullable','string'],
+            'patient' => 'required','max:255',
+            'complaint' => 'required','max:255',
+            'medicines' => 'required','array',
+            'medicines.*.dose' => 'required','max:255',
+            'medicines.*.price' => 'required','max:255',
+            'concoction' => 'required','max:255',
+            'price_concoction' => 'required','max:255',
+            'total' => 'required','max:255',
+            'status' => 'required','max:255',
+        ]);
+        $patients = Patients::find($data['patient']);
+        $medic = MedicalRecords::create([
+            'id_patient'=> $patients->id,
+            'complaint'=> $data['complaint'],
+            'concoction_medicine'=> $data['concoction'],
+            'price_concoction_medicine'=> $data['concoction'],
+            'total_price'=> $data['total'],
+            'status'=> $data['status'],
         ]);
 
-        $supplier = Supplier::find($data['supplier']);
-
-        $order = Order::create([
-            'id_supplier' => $supplier->id_supplier,
-            'address' => $supplier->address,
-            'status' => 'Pending',
-            'description' => $data['description'],
-        ]);
-
-        foreach ($data['items'] as $items) {
-            $item_order[] = Item_Order::create([
-                'id_order' => $order->id_order,
-                'id_item' => $items['item'],
-                'quantity' => $items['qty'],
+        foreach ($data['medicines'] as $medicines) {
+            $medical_rm[] = MedicalRecordsMedicines::create([
+                'medical_record_id' => $medic->id,
+                'medicine_id' => $medicines['medicines'],
+                'dose' => $medicines['dose'],
+                'price' => $medicines['price'],
             ]);
         }
 
-        return redirect('order')->with('sukses','Data Berhasil Diinput!!!');
+        return redirect('/rekam-medis')->with('sukses','Data Berhasil Diinput!!!');
     }
 }

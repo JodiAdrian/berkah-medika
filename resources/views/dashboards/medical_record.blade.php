@@ -110,7 +110,8 @@
 					<!--end::Search Form-->
 					<!--end: Search Form-->
 					<!--begin: Datatable-->
-					<table class="datatable datatable-bordered datatable-head-custom" id="kt_datatable">
+					<table class="table table-bordered table-head-custom">
+					{{-- <table class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"> --}}
 						<thead>
 							<tr>
 								<th>Nama Pasien</th>
@@ -122,19 +123,25 @@
 							</tr>
 						</thead>
 						<tbody>
-							{{-- @foreach ($medicine as $m)
+							@foreach ($medical_records as $medical_record)
 							<tr>
-								<td>{{ $m->name }}</td>
-								<td>{{ $m->dose }}</td>
-								<td> Rp.{{ number_format ($m->price) }}</td>
-								<td>{{ $m->created_at }}</td>
+								<td>{{ $medical_record->patient->name }}</td>
+								<td>{{ $medical_record->complaint }}</td>
+								<td>
+									{{-- @json($medical_record->medical_record_medicines) --}}
+									@foreach($medical_record->medical_record_medicines as $medical_record_medicines)
+										<p class="mb-0">- {{ $medical_record_medicines->medicine->name }} | {{ $medical_record_medicines->dose }} | {{ $medical_record_medicines->price }}</p>
+									@endforeach
+								</td>
+								<td>{{ $medical_record->status }}</td>
+								<td>{{ $medical_record->created_at->format('d F Y H:i') }}</td>
 								<td>
 									<button class="btn btn-outline-warning btn-sm"><i class="icon-sm text-warning flaticon-edit"></i>Ubah</button>
-									<button class="btn btn-outline-danger btn-sm"><i class="icon-sm text-danger flaticon2-trash delete" data-id="{{ $m->id }}" data-action="{{ route('delete.medicine',$m->id) }}" onclick="deleteConfirmation({{$m->id}})"></i>hapus</button>
+									<button class="btn btn-outline-danger btn-sm"><i class="icon-sm text-danger flaticon2-trash delete" data-id="{{ $medical_record->id }}" data-action="{{ route('delete.medicine',$medical_record->id) }}" onclick="deleteConfirmation({{$medical_record->id}})"></i>hapus</button>
 								</td>
 							</tr>
 							@endforeach
-						</tbody> --}}
+						</tbody>
 					</table>
 					<!--end: Datatable-->
 				</div>
@@ -154,7 +161,7 @@
 						<i aria-hidden="true" class="ki ki-close"></i>
 					</button>
 				</div>
-				<form action="{{ route('store.medicine') }}" method="post" enctype="multipart/form-data">
+				<form action="{{ route('store.record') }}" method="post" enctype="multipart/form-data">
 					{{ csrf_field() }}
 					<div class="modal-body">
 						<div class="form-group">
@@ -162,7 +169,7 @@
                             <span class="text-danger">*</span></label>
                             <select name="patient" class="form-control" id="exampleSelect1">
 								@foreach ($patients as $patient)
-                                <option value="$patient->id_user">{{$patient->name}}</option>
+                                <option value="{{$patient->id}}">{{$patient->name}}</option>
 							@endforeach
                             </select>
                         </div>
@@ -229,10 +236,10 @@
 									<div class=" col-form-label">
 										<div class="radio-inline">
 											<label class="radio radio-danger">
-											<input class="col-6"  type="radio" name="radios5" />
+											<input class="col-6"  type="radio" name="status" value="Pemeriksaan_Berkala"/>
 											<span></span>Pemeriksaan Berkala</label>
 											<label class="radio radio-success">
-											<input type="radio" name="radios5" checked="checked" />
+											<input type="radio" name="status" checked="checked" value="Selesai" />
 											<span></span>Selesai</label>
 										</div>
 									</div>

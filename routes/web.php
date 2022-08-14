@@ -9,6 +9,7 @@ Route::post('/pasien/update', [App\Http\Controllers\DashboardController::class, 
 Route::get  ('/pasien/{id}/delete', [App\Http\Controllers\DashboardController::class, 'delete'])->name('delete.patient');
 
 Route::get('/rekam-medis', [App\Http\Controllers\MedicalRecordController::class, 'render'])->name('medical-record');
+Route::post('/rekam-medis/input', [App\Http\Controllers\MedicalRecordController::class, 'store'])->name('store.record');
 
 Route::get('/alat_kesehatan',[App\Http\Controllers\MedicalDeviceController::class, 'render'])->name('device');
 Route::post('/alat_kesehatan/input',[App\Http\Controllers\MedicalDeviceController::class, 'store'])->name('store.device');
